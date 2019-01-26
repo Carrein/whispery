@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "663267627987",
+    "firebase_url": "https://whispery-1a75a.firebaseio.com",
+    "project_id": "whispery-1a75a",
+    "storage_bucket": "whispery-1a75a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663267627987:android:c2121abccc159011",
+        "android_client_info": {
+          "package_name": "com.example.whispery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "663267627987-asvk8n55cth01ghac2pfkpd3ah2hmcp7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.whispery",
+            "certificate_hash": "92bfa5058665e20b592eded8e31d9fb21019b559"
+          }
+        },
+        {
+          "client_id": "663267627987-buck3lmp35nq2vc8csfb4mn1v1k6ojm5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyTVlwUjZUKacK3d1I4-bmuhXaNFj5Zmk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "663267627987-buck3lmp35nq2vc8csfb4mn1v1k6ojm5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
