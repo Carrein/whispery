@@ -8,6 +8,7 @@ class Components {
   Map<String, TextInputType> fieldTypes = {
     "Text": TextInputType.text,
     "Email": TextInputType.emailAddress,
+    "Multiline": TextInputType.multiline,
   };
 
   // WhitelistingTextInputFormatter formatter(e) {
@@ -62,36 +63,30 @@ class Components {
     );
   }
 
-  Widget textfield({
-    type: "Text",
-    controller,
-    savedValue,
-    hint,
-    obscure: false,
-    // limitFormat: false,
-  }) {
+  Widget textfield(
+      {type: "Text",
+      controller,
+      hint,
+      obscure: false,
+      validatorInput,
+      savedInput,
+      fontSize: 16.0}) {
     return TextFormField(
-      keyboardType: fieldTypes[type],
-      obscureText: obscure,
-      autocorrect: false,
-      controller: controller,
-      validator: (e) {
-        if (e.isEmpty) return Strings.emptyField;
-
-        if (type == "Text") {
-          if (!EmailValidator.validate(e)) return Strings.invalidEmail;
-        }
-        if (type == "Password") {
-          if (e.length < 8) return Strings.invalidPassword;
-        }
-      },
-      onSaved: (e) => savedValue = e,
-      // inputFormatters: [formatter(limitFormat)],
-      decoration: InputDecoration(
-        hintText: hint,
-        contentPadding: EdgeInsets.all(10.0),
-      ),
-    );
+        keyboardType: fieldTypes[type],
+        obscureText: obscure,
+        autocorrect: false,
+        controller: controller,
+        validator: validatorInput,
+        onSaved: savedInput,
+        // inputFormatters: [formatter(limitFormat)],
+        decoration: InputDecoration(
+          hintText: hint,
+          contentPadding: EdgeInsets.all(10.0),
+        ),
+        style: TextStyle(
+          fontSize: fontSize,
+          color: FCOLOR.color["D_GREY"]
+        ));
   }
 
   Widget title(titleText) {
@@ -103,5 +98,18 @@ class Components {
         style: TextStyle(fontSize: 50.0),
       )),
     );
+  }
+
+  void buildSnackbar(key, text) {
+    key.showSnackBar(SnackBar(
+      backgroundColor: FCOLOR.color["PEACH"],
+      duration: new Duration(seconds: 4),
+      content: Text(
+        text,
+        style: new TextStyle(
+          color: FCOLOR.color["D_GREY"],
+        ),
+      ),
+    ));
   }
 }

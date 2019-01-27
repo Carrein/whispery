@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:whispery/widgets/components.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:whispery/globals/strings.dart';
+import 'package:whispery/handler/login_handler.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -31,7 +34,37 @@ class _LoginPage extends State<LoginPage> {
   bool _enabled = true;
 
   //Instance of login handler to hangle form submission.
-  // LoginHandler _loginHandler = LoginHandler();
+  LoginHandler _loginHandler = LoginHandler();
+
+  void submit() {
+    FormState form = _loginFormKey.currentState;
+    if (form.validate()) {
+      toggle();
+      form.save();
+      if (_formType == FormType.register) {
+        print(_password);
+        print(_validPassword);
+        if (_password != _validPassword) {
+          components.buildSnackbar(
+              _loginScaffoldKey.currentState, Strings.passwordMismatch);
+          toggle();
+        } else {
+          _loginHandler.register(_email, _password).then((response) {
+            if (response) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => EditorPage()),
+              );
+            } else {
+              
+            }
+          });
+        }
+      } else {
+        _loginHandler.login(_email, _password).then((response) {});
+      }
+    }
+  }
 
   void moveToRegister() {
     _loginFormKey.currentState.reset();
@@ -47,20 +80,26 @@ class _LoginPage extends State<LoginPage> {
     });
   }
 
+  void toggle() {
+    setState(() {
+      _enabled = !_enabled;
+    });
+  }
+
   Widget buttons() {
     List<Widget> buttonList;
 
     switch (_formType) {
       case FormType.login:
         buttonList = [
-          components.longButton("login", "ORANGE", _enabled ? null : null),
+          components.longButton("login", "ORANGE", _enabled ? submit : null),
           components.longButton(
               "signup?", "ORANGE", _enabled ? moveToRegister : null),
         ];
         break;
       case FormType.register:
         buttonList = [
-          components.longButton("register", "ORANGE", _enabled ? null : null),
+          components.longButton("register", "ORANGE", _enabled ? submit : null),
           components.longButton(
               "login?", "ORANGE", _enabled ? moveToLogin : null),
         ];
@@ -97,15 +136,23 @@ class _LoginPage extends State<LoginPage> {
               components.textfield(
                 type: "Email",
                 controller: _emailController,
-                savedValue: _email,
+                savedInput: (e) => _email = e,
                 hint: "email",
+                validatorInput: (e) {
+                  if (e.isEmpty) return Strings.emptyField;
+                  if (!EmailValidator.validate(e)) return Strings.invalidEmail;
+                },
               ),
               components.textfield(
                 type: "Text",
                 controller: _passController,
-                savedValue: _password,
+                savedInput: (e) => _password = e,
                 hint: "passsword",
                 obscure: true,
+                validatorInput: (e) {
+                  if (e.isEmpty) return Strings.emptyField;
+                  if (e.length < 8) return Strings.invalidPassword;
+                },
               ),
             ],
           ),
@@ -118,22 +165,34 @@ class _LoginPage extends State<LoginPage> {
               components.textfield(
                 type: "Email",
                 controller: _emailController,
-                savedValue: _email,
+                savedInput: (e) => _email = e,
                 hint: "email",
+                validatorInput: (e) {
+                  if (e.isEmpty) return Strings.emptyField;
+                  if (!EmailValidator.validate(e)) return Strings.invalidEmail;
+                },
               ),
               components.textfield(
                 type: "Text",
                 controller: _passController,
-                savedValue: _password,
+                savedInput: (e) => _password = e,
                 hint: "passsword",
                 obscure: true,
+                validatorInput: (e) {
+                  if (e.isEmpty) return Strings.emptyField;
+                  if (e.length < 8) return Strings.invalidPassword;
+                },
               ),
               components.textfield(
                 type: "Text",
                 controller: _validPassController,
-                savedValue: _validPassword,
+                savedInput: (e) => _validPassword = e,
                 hint: "reenter passsword",
                 obscure: true,
+                validatorInput: (e) {
+                  if (e.isEmpty) return Strings.emptyField;
+                  if (e.length < 8) return Strings.invalidPassword;
+                },
               ),
             ],
           ),
@@ -154,19 +213,17 @@ class _LoginPage extends State<LoginPage> {
             ],
           ),
           Align(
-          alignment: Alignment.bottomCenter,
-          child: FlatButton(
-            child: Text(
-              "forget password?",
-              style: TextStyle(
-                fontSize: 12.0,
+            alignment: Alignment.bottomCenter,
+            child: FlatButton(
+              child: Text(
+                "forget password?",
+                style: TextStyle(
+                  fontSize: 12.0,
+                ),
               ),
+              onPressed: () {},
             ),
-            onPressed: (){
-              print("clicked");
-            },
           ),
-        ),
         ],
       ),
     );
