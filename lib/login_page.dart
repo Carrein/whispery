@@ -3,39 +3,43 @@ import 'package:whispery/widgets/components.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:whispery/globals/strings.dart';
 import 'package:whispery/handler/login_handler.dart';
+import 'package:whispery/editor_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   createState() => _LoginPage();
 }
 
-//Two form types.
+// The two types of form in LoginPage.
 enum FormType { login, register }
 
 class _LoginPage extends State<LoginPage> {
+
+  // GlobalKeys for LoginPage. 
   static final _loginFormKey = GlobalKey<FormState>();
   static final _loginScaffoldKey = GlobalKey<ScaffoldState>();
 
-  //Set of controllers to test validity of inputs.
+  // The set of controller to test validity of inputs.
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final TextEditingController _validPassController = TextEditingController();
 
-  //Switch for form type.
+  // Set inital form type to be login.
   FormType _formType = FormType.login;
 
-  //String value for form fields.
+  // String value for form fields.
   String _email;
   String _password;
   String _validPassword;
   Components components = new Components();
 
-  //Boolean to disable button on empty fields.
+  // Boolean to disable button on empty fields.
   bool _enabled = true;
 
-  //Instance of login handler to hangle form submission.
+  // Instance of login handler to hangle form submission.
   LoginHandler _loginHandler = LoginHandler();
 
+  // Submits all fields in the current form page to LoginHandler.
   void submit() {
     FormState form = _loginFormKey.currentState;
     if (form.validate()) {
@@ -45,7 +49,7 @@ class _LoginPage extends State<LoginPage> {
         print(_password);
         print(_validPassword);
         if (_password != _validPassword) {
-          components.buildSnackbar(
+          components.buildSnackbar( 
               _loginScaffoldKey.currentState, Strings.passwordMismatch);
           toggle();
         } else {
@@ -56,16 +60,40 @@ class _LoginPage extends State<LoginPage> {
                 MaterialPageRoute(builder: (context) => EditorPage()),
               );
             } else {
-              
+              components.buildSnackbar(
+                  _loginScaffoldKey.currentState, Strings.emailExists);
+              toggle();
             }
           });
         }
       } else {
-        _loginHandler.login(_email, _password).then((response) {});
+        _loginHandler.login(_email, _password).then((response) {
+          switch (response) {
+            case 1:
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => EditorPage()),
+              // );
+              break;
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => EditorPage()),
+              );
+              break;
+
+            case -1:
+              components.buildSnackbar(
+                  _loginScaffoldKey.currentState, Strings.wrongLogin);
+              toggle();
+              break;
+          }
+        });
       }
     }
   }
 
+  // Switch between login and register pages.
   void moveToRegister() {
     _loginFormKey.currentState.reset();
     setState(() {

@@ -2,6 +2,8 @@ class Strings {
   static String emptyField = "input cannot be empty";
   static String invalidEmail = "email must be of valid format";
   static String invalidPassword = "password must be longer than 8 characters";
+  static String usernameMinLength = "username must be longer than 6 characters";
+  static String bioMessage = "what's your story?";
 
   static String passwordMismatch = "password do not match 😔";
   static String wrongLogin = "wrong email/password, try again 😔";
@@ -26,4 +28,7 @@ class Strings {
     "Lowest Price First",
     "Highest Price First",
   ];
+
+  static String postsFunction = "https://us-central1-whispery-1a75a.cloudfunctions.net/postFeed";
+  static String commentsFunction = "https://us-central1-whispery-1a75a.cloudfunctions.net/commentFeed";
 }

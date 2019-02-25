@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whispery/login_page.dart';
+import 'package:whispery/feed_page.dart';
 import 'package:whispery/theme/themes.dart';
 
 void main() => runApp(MyApp());
@@ -10,11 +11,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyApp extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: androidTheme,
+      // home: LoginPage(),
       home: LoginPage(),
     );
     // return MaterialApp(

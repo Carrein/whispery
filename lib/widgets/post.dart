@@ -10,6 +10,7 @@ class Post {
   final double longitude;
   final int likes;
   final int time;
+  
 
   Post(
       {this.id,
@@ -19,35 +20,18 @@ class Post {
       this.time,
       this.username,
       this.flair,
-      this.likes
-      });
+      this.likes});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
-      id: json['id'],
-      content: json['content'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
-      time: json['time'],
-      username: json['username'],
-      flair: json['flair']
-    );
+        id: json['id'],
+        content: json['content'],
+        latitude: json['latitude'],
+        longitude: json['longitude'],
+        time: json['time'],
+        username: json['username'],
+        flair: json['flair']);
   }
-
-  // Widget tile(context) {
-  //   return postBox(
-  //     content: content,
-  //     username: username,
-  //     time: time,
-  //     color: flairs[flair],
-  //     action: () => Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //             builder: (context) => CommentPage(
-  //                   post: this,
-  //                 ))),
-  //   );
-  // } 
 }
 
 class PostList {

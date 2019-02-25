@@ -3,6 +3,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:whispery/globals/strings.dart';
 import 'package:flutter/services.dart';
 import 'package:whispery/globals/colors.dart';
+import 'package:whispery/widgets/post.dart';
+import 'package:whispery/globals/constants.dart';
 
 class Components {
   Map<String, TextInputType> fieldTypes = {
@@ -11,13 +13,39 @@ class Components {
     "Multiline": TextInputType.multiline,
   };
 
-  // WhitelistingTextInputFormatter formatter(e) {
-  //   if (e) {
-  //     return WhitelistingTextInputFormatter(RegExp("[a-zA-Z0-9!.-_]"));
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  Widget postTile(Post post, context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10.0),
+      child: ListTile(
+        title: Text(
+          post.content,
+          maxLines: null,
+        ),
+        subtitle: Text(post.username),
+        trailing: Text(post.time.toString()),
+        // onTap: () => Navigator.push(
+        // context,
+        // MaterialPageRoute(
+        // builder: (context) => CommentPage(
+        //       post: this,
+        //     ))),
+      ),
+      decoration: BoxDecoration(
+          border: Border(
+        top: BorderSide(width: 2.0, color: FCOLOR.color[post.flair]),
+      )),
+    );
+  }
+
+  Widget circleButton(icon, action) {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: FloatingActionButton(
+        child: icon,
+        onPressed: action,
+      ),
+    );
+  }
 
   Widget textDivider(text) {
     return Row(
@@ -70,7 +98,8 @@ class Components {
       obscure: false,
       validatorInput,
       savedInput,
-      fontSize: 16.0}) {
+      fontSize: 16.0,
+      maxLines: 1}) {
     return TextFormField(
         keyboardType: fieldTypes[type],
         obscureText: obscure,
@@ -78,15 +107,13 @@ class Components {
         controller: controller,
         validator: validatorInput,
         onSaved: savedInput,
+        maxLines: maxLines,
         // inputFormatters: [formatter(limitFormat)],
         decoration: InputDecoration(
           hintText: hint,
           contentPadding: EdgeInsets.all(10.0),
         ),
-        style: TextStyle(
-          fontSize: fontSize,
-          color: FCOLOR.color["D_GREY"]
-        ));
+        style: TextStyle(fontSize: fontSize, color: FCOLOR.color["D_GREY"]));
   }
 
   Widget title(titleText) {
@@ -111,5 +138,20 @@ class Components {
         ),
       ),
     ));
+  }
+
+  Widget slider(changeAction, changeEndAction){
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Slider(
+        divisions: 9,
+        min: 1.0,
+        max: 10.0,
+        onChanged: changeAction,
+        onChangeEnd: changeEndAction,
+        value: distance,
+        label: distance.round().toString(),
+      )
+    );
   }
 }
